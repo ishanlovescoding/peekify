@@ -35,3 +35,8 @@ uploads/
 # Build
 dist/
 build/
+.next/
+out/
+
+# Next.js
+next-env.d.ts

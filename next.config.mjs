@@ -53,15 +53,16 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    turbopackUseSystemTlsCerts: true,
   },
-  
+
   // Compiler options
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
     } : false,
   },
-  
+
   // TypeScript configuration
   typescript: {
     ignoreBuildErrors: true, // Updated code here
