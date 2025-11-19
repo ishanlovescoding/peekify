@@ -25,6 +25,8 @@
  * See individual endpoint comments for more details.
  */
 
+import type { CommentsResponse, CreateCommentResponse, ToggleLikeResponse } from '@/types'
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 interface ApiOptions extends RequestInit {
@@ -165,16 +167,19 @@ export const reactionsApi = {
 // Comments endpoints (backend uses /feed/:id/comments)
 export const commentsApi = {
   addComment: (feedItemId: string, content: string) =>
-    api(`/feed/${feedItemId}/comments`, { method: 'POST', body: JSON.stringify({ content }) }),
-  getComments: (feedItemId: string) => api<any>(`/feed/${feedItemId}/comments`),
+    api<CreateCommentResponse>(`/feed/${feedItemId}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+    }),
+  getComments: (feedItemId: string) => api<CommentsResponse>(`/feed/${feedItemId}/comments`),
   // TODO: Backend DELETE /comments/:id endpoint doesn't exist - needs implementation
   deleteComment: (commentId: string) =>
-    api(`/comments/${commentId}`, { method: 'DELETE' }),
+    api<void>(`/comments/${commentId}`, { method: 'DELETE' }),
   // TODO: Backend POST /comments/:id/like endpoint doesn't exist - needs implementation
   toggleLike: (commentId: string) =>
-    api(`/comments/${commentId}/like`, { method: 'POST' }),
+    api<ToggleLikeResponse>(`/comments/${commentId}/like`, { method: 'POST' }),
   // TODO: Backend GET /comments/:id/likes endpoint doesn't exist - needs implementation
-  getLikes: (commentId: string) => api<any>(`/comments/${commentId}/likes`),
+  getLikes: (commentId: string) => api<ToggleLikeResponse>(`/comments/${commentId}/likes`),
 }
 
 // Stats endpoints (backend uses /history/stats)

@@ -72,7 +72,7 @@ export function CommentInput({ postId, onSubmit, autoFocus = false, className }:
     <form onSubmit={handleSubmit} className={cn("flex items-start gap-3", className)}>
       <ProfilePicture
         src={user.profilePictureUrl}
-        username={user.displayName || user.email}
+        alt={user.username || user.email}
         size="sm"
         className="mt-1 shrink-0"
       />

@@ -176,19 +176,19 @@ export function PostCard({ post, priority = false }: PostCardProps) {
       aria-label={`${post.user.username}'s song of the day`}
     >
       <div className="flex items-center justify-between p-4 bg-bg-surface">
-        <Link 
-          href={`/profile/${post.user.username}`} 
+        <Link
+          href={`/profile/${post.user.username}`}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity focus:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-green/50 rounded-lg"
           aria-label={`View ${post.user.username}'s profile`}
         >
           <ProfilePicture
             src={post.user.profilePictureUrl}
-            username={post.user.username}
+            alt={post.user.username}
             size="md"
           />
           <div>
             <div className="font-semibold text-base">{post.user.username}</div>
-            <time 
+            <time
               className="text-sm text-text-tertiary"
               dateTime={post.createdAt}
             >
@@ -197,7 +197,7 @@ export function PostCard({ post, priority = false }: PostCardProps) {
           </div>
         </Link>
         
-        <Button variant="icon" size="icon-sm" aria-label="More options">
+        <Button variant="ghost" size="icon-sm" aria-label="More options">
           <MoreVertical className="w-5 h-5" />
         </Button>
       </div>
@@ -208,7 +208,6 @@ export function PostCard({ post, priority = false }: PostCardProps) {
           alt={`${post.song.name} by ${post.song.artist}`}
           size="hero"
           priority={priority}
-          showPlayOverlay={true}
         />
         <ReactionRing reactions={post.reactions} className="pointer-events-none" />
         

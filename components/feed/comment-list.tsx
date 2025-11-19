@@ -77,7 +77,7 @@ export function CommentList({ postId, comments, onLike, onDelete, className }: C
               >
                 <ProfilePicture
                   src={comment.profilePic}
-                  username={comment.username}
+                  alt={comment.username}
                   size="sm"
                 />
               </Link>
