@@ -1,3 +1,30 @@
+/**
+ * API Client for Peekify Backend
+ *
+ * This file has been updated to match the actual backend routes.
+ *
+ * WORKING ENDPOINTS:
+ * - Auth: /auth/login, /auth/callback, /auth/me, /auth/logout
+ * - Users: /users/me (GET, PATCH), /users/:userId (GET)
+ * - Feed: /feed (GET, POST)
+ * - Comments: /feed/:feedItemId/comments (GET, POST)
+ * - Reactions: /feed/:feedItemId/reactions (POST)
+ * - History: /history (GET), /history/sync (POST), /history/stats (GET)
+ * - Notifications: /notifications/subscribe, /notifications/unsubscribe
+ *
+ * NOT IMPLEMENTED (Backend returns 404):
+ * - Friends system (all /friends/* routes) - CRITICAL FEATURE MISSING
+ * - User search (/users/search)
+ * - Delete comment (/comments/:id DELETE)
+ * - Like comment (/comments/:id/like POST)
+ * - Remove reaction (/feed/:id/reactions DELETE)
+ * - Get reactions (/feed/:id/reactions GET)
+ * - Today's song (/history/today)
+ * - Weekly recap (/history/weekly)
+ *
+ * See individual endpoint comments for more details.
+ */
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 interface ApiOptions extends RequestInit {
@@ -69,16 +96,22 @@ export const authApi = {
 export const userApi = {
   getMe: () => api<any>('/users/me'),
   updateMe: (data: any) => api('/users/me', { method: 'PATCH', body: JSON.stringify(data) }),
+  // NOTE: Backend expects userId (UUID), not username. This will fail until:
+  // 1. Backend adds username column to database
+  // 2. Backend adds GET /users/:username route (or search by username)
+  // For now, use getUserById with UUID instead
   getByUsername: (username: string) => api<any>(`/users/${username}`),
+  getUserById: (userId: string) => api<any>(`/users/${userId}`),
   deleteAccount: () => api('/users/me', { method: 'DELETE' }),
 }
 
-// Tracking endpoints
+// History/Tracking endpoints (backend uses /history)
 export const trackingApi = {
-  sync: (data: any) => api('/tracking/sync', { method: 'POST', body: JSON.stringify(data) }),
-  getToday: () => api<any>('/tracking/today'),
-  getHistory: (startDate?: string, endDate?: string) => 
-    api<any>('/tracking/history', { params: { startDate, endDate } as any }),
+  sync: (data: any) => api('/history/sync', { method: 'POST', body: JSON.stringify(data) }),
+  // TODO: Backend endpoint /history/today doesn't exist yet - needs implementation
+  getToday: () => api<any>('/history/today'),
+  getHistory: (startDate?: string, endDate?: string) =>
+    api<any>('/history', { params: { startDate, endDate } as any }),
 }
 
 // Feed endpoints
@@ -88,46 +121,67 @@ export const feedApi = {
 }
 
 // Friends endpoints
+// WARNING: The entire friends system is NOT IMPLEMENTED on the backend yet!
+// These endpoints will all return 404 errors until backend implementation is complete.
+// Required backend work:
+// - Create friends table in database
+// - Create friend_requests table in database
+// - Create /routes/friends.js
+// - Create /controllers/friendsController.js
+// - Implement all CRUD operations for friend management
 export const friendsApi = {
-  sendRequest: (userId: string) => 
+  // TODO: Backend route /friends/request doesn't exist - needs full friends system implementation
+  sendRequest: (userId: string) =>
     api('/friends/request', { method: 'POST', body: JSON.stringify({ userId }) }),
-  acceptRequest: (requestId: string) => 
+  // TODO: Backend route /friends/accept doesn't exist
+  acceptRequest: (requestId: string) =>
     api(`/friends/accept`, { method: 'POST', body: JSON.stringify({ requestId }) }),
-  declineRequest: (requestId: string) => 
+  // TODO: Backend route /friends/decline doesn't exist
+  declineRequest: (requestId: string) =>
     api(`/friends/decline`, { method: 'POST', body: JSON.stringify({ requestId }) }),
-  removeFriend: (friendId: string) => 
+  // TODO: Backend route /friends/:id doesn't exist
+  removeFriend: (friendId: string) =>
     api(`/friends/${friendId}`, { method: 'DELETE' }),
+  // TODO: Backend route /friends doesn't exist
   getFriends: () => api<any>('/friends'),
+  // TODO: Backend route /friends/requests doesn't exist
   getRequests: () => api<any>('/friends/requests'),
-  searchUsers: (query: string) => 
+  // TODO: Backend route /users/search doesn't exist
+  searchUsers: (query: string) =>
     api<any>('/users/search', { params: { q: query } }),
 }
 
-// Reactions endpoints
+// Reactions endpoints (backend uses /feed/:id/reactions)
 export const reactionsApi = {
-  addReaction: (postId: string, emoji: string) => 
-    api(`/posts/${postId}/react`, { method: 'POST', body: JSON.stringify({ emoji }) }),
-  removeReaction: (postId: string) => 
-    api(`/posts/${postId}/react`, { method: 'DELETE' }),
-  getReactions: (postId: string) => api<any>(`/posts/${postId}/reactions`),
+  addReaction: (feedItemId: string, emoji: string) =>
+    api(`/feed/${feedItemId}/reactions`, { method: 'POST', body: JSON.stringify({ emoji }) }),
+  // TODO: Backend DELETE /feed/:id/reactions endpoint doesn't exist - needs implementation
+  removeReaction: (feedItemId: string) =>
+    api(`/feed/${feedItemId}/reactions`, { method: 'DELETE' }),
+  // TODO: Backend GET /feed/:id/reactions endpoint doesn't exist - needs implementation
+  getReactions: (feedItemId: string) => api<any>(`/feed/${feedItemId}/reactions`),
 }
 
-// Comments endpoints
+// Comments endpoints (backend uses /feed/:id/comments)
 export const commentsApi = {
   addComment: (feedItemId: string, content: string) =>
-    api('/comments', { method: 'POST', body: JSON.stringify({ feedItemId, content }) }),
-  getComments: (feedItemId: string) => api<any>(`/comments/feed/${feedItemId}`),
+    api(`/feed/${feedItemId}/comments`, { method: 'POST', body: JSON.stringify({ content }) }),
+  getComments: (feedItemId: string) => api<any>(`/feed/${feedItemId}/comments`),
+  // TODO: Backend DELETE /comments/:id endpoint doesn't exist - needs implementation
   deleteComment: (commentId: string) =>
     api(`/comments/${commentId}`, { method: 'DELETE' }),
+  // TODO: Backend POST /comments/:id/like endpoint doesn't exist - needs implementation
   toggleLike: (commentId: string) =>
     api(`/comments/${commentId}/like`, { method: 'POST' }),
+  // TODO: Backend GET /comments/:id/likes endpoint doesn't exist - needs implementation
   getLikes: (commentId: string) => api<any>(`/comments/${commentId}/likes`),
 }
 
-// Stats endpoints
+// Stats endpoints (backend uses /history/stats)
 export const statsApi = {
-  getMyStats: () => api<any>('/stats/me'),
-  getWeeklyRecap: () => api<any>('/stats/weekly'),
+  getMyStats: () => api<any>('/history/stats'),
+  // TODO: Backend GET /history/weekly endpoint doesn't exist - needs implementation
+  getWeeklyRecap: () => api<any>('/history/weekly'),
 }
 
 // Notifications endpoints
