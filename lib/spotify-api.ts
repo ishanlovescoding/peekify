@@ -112,10 +112,19 @@ async function playTrack(trackUri: string, deviceId?: string): Promise<void> {
   }
 }
 
+interface SpotifyUserDevice {
+  id: string
+  is_active: boolean
+  is_restricted: boolean
+  name: string
+  type: string
+  volume_percent?: number
+}
+
 /**
  * Get the user's available Spotify devices
  */
-async function getDevices(): Promise<SpotifyApi.UserDevice[]> {
+async function getDevices(): Promise<SpotifyUserDevice[]> {
   try {
     const response = await fetch(`${API_URL}/spotify/devices`, {
       method: 'GET',
