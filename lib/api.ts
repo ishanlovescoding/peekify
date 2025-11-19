@@ -68,7 +68,7 @@ export const authApi = {
 // User endpoints
 export const userApi = {
   getMe: () => api<any>('/users/me'),
-  updateMe: (data: any) => api('/users/me', { method: 'PUT', body: JSON.stringify(data) }),
+  updateMe: (data: any) => api('/users/me', { method: 'PATCH', body: JSON.stringify(data) }),
   getByUsername: (username: string) => api<any>(`/users/${username}`),
   deleteAccount: () => api('/users/me', { method: 'DELETE' }),
 }
