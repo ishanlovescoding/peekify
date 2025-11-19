@@ -13,7 +13,7 @@ export type WebSocketMessage = {
 
 export function useWebSocket() {
   const ws = useRef<WebSocket | null>(null)
-  const reconnectTimeout = useRef<NodeJS.Timeout>()
+  const reconnectTimeout = useRef<NodeJS.Timeout | null>(null)
   const queryClient = useQueryClient()
   const { toast } = useToast()
 

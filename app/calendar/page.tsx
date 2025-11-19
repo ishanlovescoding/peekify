@@ -32,15 +32,15 @@ export default function CalendarPage() {
   })
 
   const songs = data?.songs || {}
-  const songsArray = data?.raw || []
+  const songsArray: SongOfTheDay[] = data?.raw || []
 
   const stats = {
     daysTracked: Object.keys(songs).length,
-    totalPlays: songsArray.reduce((sum, s) => sum + s.playCount, 0),
+    totalPlays: songsArray.reduce((sum, song) => sum + song.playCount, 0),
     hoursListened: Math.round(
-      songsArray.reduce((sum, s) => sum + s.totalListeningTimeMs, 0) / (1000 * 60 * 60)
+      songsArray.reduce((sum, song) => sum + song.totalListeningTimeMs, 0) / (1000 * 60 * 60)
     ),
-    uniqueArtists: new Set(songsArray.map(s => s.song.artist)).size,
+    uniqueArtists: new Set(songsArray.map((song) => song.song.artist)).size,
   }
 
   useEffect(() => {

@@ -88,3 +88,37 @@ export interface NotificationSubscription {
     auth: string
   }
 }
+
+// Feed comments
+export interface FeedCommentUser {
+  id: string
+  displayName: string
+  profilePictureUrl?: string
+}
+
+export interface FeedComment {
+  id: string
+  feedItemId: string
+  userId: string
+  content: string
+  createdAt: string
+  user: FeedCommentUser
+  likeCount: number
+  isLiked: boolean
+}
+
+export interface CommentsResponse {
+  success: boolean
+  comments: FeedComment[]
+}
+
+export interface CreateCommentResponse {
+  success: boolean
+  comment: FeedComment
+}
+
+export interface ToggleLikeResponse {
+  success: boolean
+  likeCount: number
+  isLiked: boolean
+}

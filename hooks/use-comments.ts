@@ -3,38 +3,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { commentsApi } from '@/lib/api'
 import { useToast } from '@/hooks/use-toast'
-
-// Types
-export interface Comment {
-  id: string
-  feedItemId: string
-  userId: string
-  content: string
-  createdAt: string
-  user: {
-    id: string
-    displayName: string
-    profilePictureUrl?: string
-  }
-  likeCount: number
-  isLiked: boolean
-}
-
-interface CommentsResponse {
-  success: boolean
-  comments: Comment[]
-}
-
-interface CreateCommentResponse {
-  success: boolean
-  comment: Comment
-}
-
-interface ToggleLikeResponse {
-  success: boolean
-  likeCount: number
-  isLiked: boolean
-}
+import type {
+  CommentsResponse,
+  CreateCommentResponse,
+  ToggleLikeResponse,
+} from '@/types'
 
 // Query Keys
 export const commentKeys = {
@@ -90,7 +63,7 @@ export function useDeleteComment() {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
-  return useMutation<void, Error, { commentId: string; feedItemId: string }>({
+  return useMutation<void, Error, { commentId: string; feedItemId: string }, { previousComments?: CommentsResponse }>({
     mutationFn: ({ commentId }) => commentsApi.deleteComment(commentId),
     onMutate: async ({ commentId, feedItemId }) => {
       // Cancel outgoing refetches
@@ -150,7 +123,12 @@ export function useToggleCommentLike() {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
-  return useMutation<ToggleLikeResponse, Error, { commentId: string; feedItemId: string }>({
+  return useMutation<
+    ToggleLikeResponse,
+    Error,
+    { commentId: string; feedItemId: string },
+    { previousComments?: CommentsResponse }
+  >({
     mutationFn: ({ commentId }) => commentsApi.toggleLike(commentId),
     onMutate: async ({ commentId, feedItemId }) => {
       // Cancel outgoing refetches

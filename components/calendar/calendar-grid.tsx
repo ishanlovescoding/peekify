@@ -102,11 +102,11 @@ export function CalendarGrid({ songs, onDayClick, 'aria-label': ariaLabel }: Cal
         role="row"
       >
         {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, idx) => (
-          <div 
-            key={day} 
-            className="text-center py-2" 
+          <div
+            key={day}
+            className="text-center py-2"
             role="columnheader"
-            abbr={day}
+            aria-label={day}
           >
             <span className="hidden sm:inline">{day.slice(0, 3)}</span>
             <span className="sm:hidden">{day.slice(0, 1)}</span>
