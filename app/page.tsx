@@ -22,7 +22,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
   }
 };
 
@@ -94,7 +94,7 @@ const DemoCard = () => (
       </div>
       <div className="p-4 flex justify-between items-center bg-[#18181b]">
         <div className="flex -space-x-2">
-          {[1,2,3].map(i => (
+          {[1, 2, 3].map(i => (
             <div key={i} className="w-8 h-8 rounded-full border-2 border-[#18181b] bg-zinc-700" />
           ))}
         </div>
@@ -178,8 +178,8 @@ export default function LandingPage() {
 
             <motion.div variants={fadeInUp} className="pt-8 flex items-center gap-4 justify-center md:justify-start text-zinc-500 text-sm">
               <div className="flex -space-x-2">
-                {[1,2,3,4].map(i => (
-                  <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} alt="" className="w-8 h-8 rounded-full border-2 border-[#09090b]" />
+                {[1, 2, 3, 4].map(i => (
+                  <img key={i} src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="" className="w-8 h-8 rounded-full border-2 border-[#09090b]" />
                 ))}
               </div>
               <p>Joined by 10,000+ listeners</p>
@@ -232,7 +232,7 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works */}
-      <section className="py-24 border-t border-white/5">
+      <section id="manifesto" className="py-24 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="relative order-2 md:order-1">
