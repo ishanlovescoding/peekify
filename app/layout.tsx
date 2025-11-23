@@ -73,13 +73,14 @@ export default function RootLayout({
               window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
                   .then(reg => {
-                    console.log('[v0] Service Worker registered')
                     // Request notification permission on load if not granted
                     if ('Notification' in window && Notification.permission === 'default') {
                       Notification.requestPermission()
                     }
                   })
-                  .catch(err => console.error('[v0] Service Worker registration failed:', err))
+                  .catch(err => {
+                    // Service Worker registration failed
+                  })
               })
             }
           `}

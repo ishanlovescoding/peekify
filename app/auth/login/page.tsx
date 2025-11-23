@@ -133,7 +133,7 @@ export default function LoginPage() {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 flex justify-center p-6 relative z-10">
+      <main className="flex-1 flex items-center justify-center p-6 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"

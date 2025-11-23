@@ -315,8 +315,7 @@ export default function LandingPage() {
           <div className="flex gap-8 text-zinc-500 text-sm font-medium">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <a href="#" className="hover:text-white transition-colors">Twitter</a>
-            <a href="#" className="hover:text-white transition-colors">GitHub</a>
+            <Link href="/support" className="hover:text-white transition-colors">Support</Link>
           </div>
 
           <div className="text-zinc-600 text-sm">
